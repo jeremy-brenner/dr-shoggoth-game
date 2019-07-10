@@ -1,6 +1,6 @@
 package net.drshoggoth.games.drshoggoth.scenes
 
-class LoadingScene: Scene {
+class ScoreboardScene: Scene {
     override fun update() {}
     override fun render() {}
     override fun doneLoading() {}

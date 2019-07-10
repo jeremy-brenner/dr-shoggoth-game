@@ -10,7 +10,6 @@ class DrShoggothGame : ApplicationAdapter() {
 
     override fun create() {
         PillLoader.load()
-        sceneManager.create()
     }
 
     private fun doneLoading() {

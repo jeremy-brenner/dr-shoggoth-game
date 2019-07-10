@@ -1,8 +1,10 @@
 package net.drshoggoth.games.drshoggoth
 
-import net.drshoggoth.games.drshoggoth.scenes.GameScene
-import net.drshoggoth.games.drshoggoth.scenes.LoadingScene
-import net.drshoggoth.games.drshoggoth.scenes.TitleScene
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.GL20
+import net.drshoggoth.games.drshoggoth.Camera.camera
+import net.drshoggoth.games.drshoggoth.ModelBatcher.modelBatch
+import net.drshoggoth.games.drshoggoth.scenes.*
 
 class SceneManager {
     var current = "loading"
@@ -10,7 +12,9 @@ class SceneManager {
     private val scenes = mapOf(
             "loading" to LoadingScene(),
             "title" to TitleScene(),
-            "game" to GameScene()
+            "game" to GameScene(),
+            "background" to BackgroundScene(),
+            "scoreboard" to ScoreboardScene()
     )
 
     fun doneLoading() {
@@ -18,10 +22,13 @@ class SceneManager {
     }
 
     fun render() {
-        scenes[current]?.let {
-            it.handleInput()
-            it.render()
-        }
+        scenes[current]?.let { it.update() }
+
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
+
+        modelBatch.begin(camera)
+        scenes[current]?.let { it.render() }
+        modelBatch.end()
     }
 
     fun dispose() {

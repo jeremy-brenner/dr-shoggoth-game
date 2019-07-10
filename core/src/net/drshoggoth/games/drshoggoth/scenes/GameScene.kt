@@ -2,9 +2,7 @@ package net.drshoggoth.games.drshoggoth.scenes
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g3d.Environment
-import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.graphics.g3d.ModelInstance
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight
@@ -12,8 +10,8 @@ import com.badlogic.gdx.math.GridPoint2
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.TimeUtils
-import net.drshoggoth.games.drshoggoth.Camera.camera
 import net.drshoggoth.games.drshoggoth.GameConstants.COLORS
+import net.drshoggoth.games.drshoggoth.ModelBatcher.modelBatch
 import net.drshoggoth.games.drshoggoth.models.Pill
 import net.drshoggoth.games.drshoggoth.models.PillBottle
 import net.drshoggoth.games.drshoggoth.views.PillView
@@ -26,7 +24,6 @@ class GameScene: Scene {
         var movedDownAt = 0L
         private var pillBottle = PillBottle()
         private val environment = Environment()
-        private lateinit var modelBatch: ModelBatch
         val instances = Array<ModelInstance>()
 
         fun commitIfValid(next: Pill) =
@@ -45,7 +42,7 @@ class GameScene: Scene {
                 currentPillView!!.bitViews.forEach { instances.add(it.model) }
         }
 
-        override fun handleInput() {
+        override fun update() {
                 if(currentPillView == null) {
                         newPill()
                 }
@@ -78,19 +75,12 @@ class GameScene: Scene {
         }
 
         override fun render() {
-                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
-
-                modelBatch.begin(camera)
                 modelBatch.render(instances, environment)
-                modelBatch.end()
         }
 
         override fun doneLoading() {
                 environment.set(ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f))
                 environment.add(DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f))
-
-                modelBatch = ModelBatch()
-
                 movedDownAt = TimeUtils.millis()
         }
 
