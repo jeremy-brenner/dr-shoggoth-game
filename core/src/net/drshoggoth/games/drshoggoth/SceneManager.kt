@@ -1,9 +1,5 @@
 package net.drshoggoth.games.drshoggoth
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.GL20
-import net.drshoggoth.games.drshoggoth.Camera.camera
-import net.drshoggoth.games.drshoggoth.ModelBatcher.modelBatch
 import net.drshoggoth.games.drshoggoth.responses.UpdateResponse
 import net.drshoggoth.games.drshoggoth.scenes.*
 
