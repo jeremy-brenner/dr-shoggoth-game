@@ -1,8 +1,10 @@
 package net.drshoggoth.games.drshoggoth.scenes
 
+import net.drshoggoth.games.drshoggoth.responses.UpdateResponse
+
 interface Scene {
-    fun doneLoading()
-    fun update()
+    fun create()
+    fun update(): UpdateResponse?
     fun render()
     fun dispose()
 }

@@ -1,8 +1,10 @@
 package net.drshoggoth.games.drshoggoth.scenes
 
+import net.drshoggoth.games.drshoggoth.responses.UpdateResponse
+
 class BackgroundScene: Scene {
-    override fun update() {}
+    override fun update(): UpdateResponse? = null
     override fun render() {}
-    override fun doneLoading() {}
+    override fun create() {}
     override fun dispose() {}
 }

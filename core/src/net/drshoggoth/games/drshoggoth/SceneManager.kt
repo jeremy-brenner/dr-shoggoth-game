@@ -4,9 +4,10 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import net.drshoggoth.games.drshoggoth.Camera.camera
 import net.drshoggoth.games.drshoggoth.ModelBatcher.modelBatch
+import net.drshoggoth.games.drshoggoth.responses.UpdateResponse
 import net.drshoggoth.games.drshoggoth.scenes.*
 
-class SceneManager {
+object SceneManager {
     var current = "loading"
 
     private val scenes = mapOf(
@@ -17,13 +18,15 @@ class SceneManager {
             "scoreboard" to ScoreboardScene()
     )
 
-    fun doneLoading() {
-        scenes.map { it.value.doneLoading() }
+    fun create() {
+        scenes.map { it.value.create() }
+    }
+
+    fun update(): UpdateResponse? {
+        return scenes[current]?.let { it.update() }
     }
 
     fun render() {
-        scenes[current]?.let { it.update() }
-
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
 
         modelBatch.begin(camera)

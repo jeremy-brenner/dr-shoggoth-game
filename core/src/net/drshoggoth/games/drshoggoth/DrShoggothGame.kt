@@ -2,21 +2,13 @@ package net.drshoggoth.games.drshoggoth
 
 import com.badlogic.gdx.ApplicationAdapter
 import net.drshoggoth.games.drshoggoth.Assets.assets
+import net.drshoggoth.games.drshoggoth.responses.DoneLoadingResponse
+import net.drshoggoth.games.drshoggoth.responses.UpdateResponse
 
 
 class DrShoggothGame : ApplicationAdapter() {
-    private var loading: Boolean = true
-    private var sceneManager = SceneManager()
-
     override fun create() {
-        PillLoader.load()
-    }
-
-    private fun doneLoading() {
-        PillModels.pillModels = PillLoader.get()
-        sceneManager.doneLoading()
-        sceneManager.current = "game"
-        loading = false
+        SceneManager.create()
     }
 
     override fun resize(width: Int, height: Int) {
@@ -24,15 +16,14 @@ class DrShoggothGame : ApplicationAdapter() {
     }
 
     override fun render() {
-        if (loading && assets.update()) {
-            PillLoader.load()
-            doneLoading()
+        when(val response = SceneManager.update()){
+            is DoneLoadingResponse -> if(response.done) { SceneManager.current = "game" }
         }
-        sceneManager.render()
+        SceneManager.render()
     }
 
     override fun dispose() {
-        sceneManager.dispose()
+        SceneManager.dispose()
         assets.dispose()
     }
 }

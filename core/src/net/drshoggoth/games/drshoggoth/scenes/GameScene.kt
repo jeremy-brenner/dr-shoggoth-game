@@ -14,6 +14,7 @@ import net.drshoggoth.games.drshoggoth.GameConstants.COLORS
 import net.drshoggoth.games.drshoggoth.ModelBatcher.modelBatch
 import net.drshoggoth.games.drshoggoth.models.Pill
 import net.drshoggoth.games.drshoggoth.models.PillBottle
+import net.drshoggoth.games.drshoggoth.responses.UpdateResponse
 import net.drshoggoth.games.drshoggoth.views.PillView
 
 class GameScene: Scene {
@@ -42,7 +43,7 @@ class GameScene: Scene {
                 currentPillView!!.bitViews.forEach { instances.add(it.model) }
         }
 
-        override fun update() {
+        override fun update(): UpdateResponse? {
                 if(currentPillView == null) {
                         newPill()
                 }
@@ -72,13 +73,14 @@ class GameScene: Scene {
                         commitIfValid(pill.moveRight())
                         movedAt = TimeUtils.millis()
                 }
+                return null
         }
 
         override fun render() {
                 modelBatch.render(instances, environment)
         }
 
-        override fun doneLoading() {
+        override fun create() {
                 environment.set(ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f))
                 environment.add(DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f))
                 movedDownAt = TimeUtils.millis()
