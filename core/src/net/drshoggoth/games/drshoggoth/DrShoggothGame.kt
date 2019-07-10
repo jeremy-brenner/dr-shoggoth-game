@@ -9,10 +9,12 @@ class DrShoggothGame : ApplicationAdapter() {
     private var sceneManager = SceneManager()
 
     override fun create() {
+        PillLoader.load()
         sceneManager.create()
     }
 
     private fun doneLoading() {
+        PillModels.pillModels = PillLoader.get()
         sceneManager.doneLoading()
         sceneManager.current = "game"
         loading = false
@@ -24,6 +26,7 @@ class DrShoggothGame : ApplicationAdapter() {
 
     override fun render() {
         if (loading && assets.update()) {
+            PillLoader.load()
             doneLoading()
         }
         sceneManager.render()

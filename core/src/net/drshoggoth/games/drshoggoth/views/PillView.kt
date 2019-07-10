@@ -1,4 +1,6 @@
-package net.drshoggoth.games.drshoggoth
+package net.drshoggoth.games.drshoggoth.views
+
+import net.drshoggoth.games.drshoggoth.models.Pill
 
 class PillView(var pill: Pill){
     val bitViews = pill.bits.map { PillBitView(it) }

@@ -1,4 +1,4 @@
-package net.drshoggoth.games.drshoggoth
+package net.drshoggoth.games.drshoggoth.models
 
 import com.badlogic.gdx.math.GridPoint2
 

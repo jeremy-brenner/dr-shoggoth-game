@@ -1,6 +1,7 @@
-package net.drshoggoth.games.drshoggoth
+package net.drshoggoth.games.drshoggoth.models
 
 import com.badlogic.gdx.math.GridPoint2
+import net.drshoggoth.games.drshoggoth.views.PillView
 
 data class PillBottle(
         val width: Int = 8,

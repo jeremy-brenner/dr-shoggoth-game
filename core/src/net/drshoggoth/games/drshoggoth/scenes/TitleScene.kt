@@ -1,9 +1,8 @@
-package net.drshoggoth.games.drshoggoth
+package net.drshoggoth.games.drshoggoth.scenes
 
 class TitleScene: Scene {
     override fun handleInput() {}
     override fun render() {}
-    override fun create() {}
     override fun doneLoading() {}
     override fun dispose() {}
 }

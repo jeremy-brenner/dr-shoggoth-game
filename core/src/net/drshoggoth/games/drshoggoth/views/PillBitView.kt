@@ -1,7 +1,8 @@
-package net.drshoggoth.games.drshoggoth
+package net.drshoggoth.games.drshoggoth.views
 
 import com.badlogic.gdx.math.Vector3
 import net.drshoggoth.games.drshoggoth.PillModels.pillModels
+import net.drshoggoth.games.drshoggoth.models.PillBit
 
 class PillBitView(var bit: PillBit){
     var model = pillModels.getValue(bit.color).copy()

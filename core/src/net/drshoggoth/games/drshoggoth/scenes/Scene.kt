@@ -1,7 +1,6 @@
-package net.drshoggoth.games.drshoggoth
+package net.drshoggoth.games.drshoggoth.scenes
 
 interface Scene {
-    fun create()
     fun doneLoading()
     fun handleInput()
     fun render()

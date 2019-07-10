@@ -1,5 +1,9 @@
 package net.drshoggoth.games.drshoggoth
 
+import net.drshoggoth.games.drshoggoth.scenes.GameScene
+import net.drshoggoth.games.drshoggoth.scenes.LoadingScene
+import net.drshoggoth.games.drshoggoth.scenes.TitleScene
+
 class SceneManager {
     var current = "loading"
 
@@ -8,10 +12,6 @@ class SceneManager {
             "title" to TitleScene(),
             "game" to GameScene()
     )
-
-    fun create() {
-        scenes.map { it.value.create() }
-    }
 
     fun doneLoading() {
         scenes.map { it.value.doneLoading() }

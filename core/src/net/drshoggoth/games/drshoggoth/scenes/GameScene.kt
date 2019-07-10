@@ -1,4 +1,4 @@
-package net.drshoggoth.games.drshoggoth
+package net.drshoggoth.games.drshoggoth.scenes
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
@@ -14,6 +14,9 @@ import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.TimeUtils
 import net.drshoggoth.games.drshoggoth.Camera.camera
 import net.drshoggoth.games.drshoggoth.GameConstants.COLORS
+import net.drshoggoth.games.drshoggoth.models.Pill
+import net.drshoggoth.games.drshoggoth.models.PillBottle
+import net.drshoggoth.games.drshoggoth.views.PillView
 
 class GameScene: Scene {
         private var currentPillView: PillView? = null
@@ -37,7 +40,7 @@ class GameScene: Scene {
         fun randomColor() = COLORS[MathUtils.random(0,2)]
 
         fun newPill() {
-                val pill = Pill(randomColor(), randomColor(), GridPoint2(pillBottle.width/2, pillBottle.height))
+                val pill = Pill(randomColor(), randomColor(), GridPoint2(pillBottle.width / 2, pillBottle.height))
                 currentPillView = PillView(pill)
                 currentPillView!!.bitViews.forEach { instances.add(it.model) }
         }
@@ -82,13 +85,7 @@ class GameScene: Scene {
                 modelBatch.end()
         }
 
-        override fun create() {
-                PillLoader.load()
-        }
-
         override fun doneLoading() {
-                PillModels.pillModels = PillLoader.get()
-
                 environment.set(ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f))
                 environment.add(DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f))
 
