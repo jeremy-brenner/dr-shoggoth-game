@@ -6,22 +6,15 @@ import net.drshoggoth.games.drshoggoth.Assets.assets
 
 class DrShoggothGame : ApplicationAdapter() {
     private var loading: Boolean = true
-    private val scenes = mapOf(
-            "loading" to LoadingScene(),
-            "title" to TitleScene(),
-            "game" to GameScene()
-    )
-    private var currentScene = "loading"
+    private var sceneManager = SceneManager()
 
     override fun create() {
-        PillLoader.load()
+        sceneManager.create()
     }
 
     private fun doneLoading() {
-        println("did a thing")
-        PillModels.pillModels = PillLoader.get()
-        scenes.map { it.value.create() }
-        currentScene = "game"
+        sceneManager.doneLoading()
+        sceneManager.current = "game"
         loading = false
     }
 
@@ -33,15 +26,11 @@ class DrShoggothGame : ApplicationAdapter() {
         if (loading && assets.update()) {
             doneLoading()
         }
-
-        scenes[currentScene]?.let {
-            it.handleInput()
-            it.render()
-        }
+        sceneManager.render()
     }
 
     override fun dispose() {
-        scenes.map { it.value.dispose() }
+        sceneManager.dispose()
         assets.dispose()
     }
 }

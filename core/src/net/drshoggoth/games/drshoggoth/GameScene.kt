@@ -26,7 +26,6 @@ class GameScene: Scene {
         private lateinit var modelBatch: ModelBatch
         val instances = Array<ModelInstance>()
 
-
         fun commitIfValid(next: Pill) =
                 if (pillBottle.hasRoomFor(next)) {
                         currentPillView!!.update(next)
@@ -38,7 +37,6 @@ class GameScene: Scene {
         fun randomColor() = COLORS[MathUtils.random(0,2)]
 
         fun newPill() {
-
                 val pill = Pill(randomColor(), randomColor(), GridPoint2(pillBottle.width/2, pillBottle.height))
                 currentPillView = PillView(pill)
                 currentPillView!!.bitViews.forEach { instances.add(it.model) }
@@ -85,6 +83,12 @@ class GameScene: Scene {
         }
 
         override fun create() {
+                PillLoader.load()
+        }
+
+        override fun doneLoading() {
+                PillModels.pillModels = PillLoader.get()
+
                 environment.set(ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f))
                 environment.add(DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f))
 
