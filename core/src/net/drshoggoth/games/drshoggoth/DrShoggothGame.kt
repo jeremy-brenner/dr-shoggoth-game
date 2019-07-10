@@ -18,14 +18,17 @@ class DrShoggothGame : ApplicationAdapter() {
 
     override fun render() {
         when(val response = SceneManager.update()){
-            is DoneLoadingResponse -> if(response.done) { SceneManager.current = "game" }
+            is DoneLoadingResponse -> handleDoneLoading(response)
         }
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
 
         ModelBatcher.modelBatch.begin(Camera.camera)
         SceneManager.render()
         ModelBatcher.modelBatch.end()
+    }
 
+    fun handleDoneLoading(response: DoneLoadingResponse) {
+        if(response.done) { SceneManager.current = "game" }
     }
 
     override fun dispose() {
