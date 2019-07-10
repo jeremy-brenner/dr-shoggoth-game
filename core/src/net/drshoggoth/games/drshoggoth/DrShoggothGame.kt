@@ -3,14 +3,13 @@ package net.drshoggoth.games.drshoggoth
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
-import net.drshoggoth.games.drshoggoth.Assets.manager
 import net.drshoggoth.games.drshoggoth.responses.DoneLoadingResponse
 import net.drshoggoth.games.drshoggoth.responses.MenuSelectionResponse
 
 
 class DrShoggothGame : ApplicationAdapter() {
     override fun create() {
-        FontLoader.load()
+        Assets.load()
         SceneManager.create()
     }
 
@@ -22,8 +21,8 @@ class DrShoggothGame : ApplicationAdapter() {
         when(val response = SceneManager.update()){
             is DoneLoadingResponse -> handleDoneLoading(response)
             is MenuSelectionResponse -> handleMenuSelection(response)
-
         }
+
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
 
         SceneManager.render()
@@ -39,6 +38,6 @@ class DrShoggothGame : ApplicationAdapter() {
 
     override fun dispose() {
         SceneManager.dispose()
-        manager.dispose()
+        Assets.dispose()
     }
 }
