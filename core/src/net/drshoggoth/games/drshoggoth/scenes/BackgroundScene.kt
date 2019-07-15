@@ -2,7 +2,7 @@ package net.drshoggoth.games.drshoggoth.scenes
 
 import net.drshoggoth.games.drshoggoth.responses.UpdateResponse
 
-class BackgroundScene: Scene {
+object BackgroundScene: Scene {
     override fun update(): UpdateResponse? = null
     override fun render() {}
     override fun create() {}

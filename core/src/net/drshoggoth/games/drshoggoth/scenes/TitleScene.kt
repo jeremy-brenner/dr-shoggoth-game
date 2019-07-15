@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import net.drshoggoth.games.drshoggoth.Assets
 import net.drshoggoth.games.drshoggoth.responses.MenuSelectionResponse
 
-class TitleScene: Scene {
+object TitleScene: Scene {
     lateinit var spriteBatch: SpriteBatch
 
     override fun update(): MenuSelectionResponse? {

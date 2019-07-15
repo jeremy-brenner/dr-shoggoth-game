@@ -2,7 +2,7 @@ package net.drshoggoth.games.drshoggoth.scenes
 
 import net.drshoggoth.games.drshoggoth.responses.UpdateResponse
 
-class ScoreboardScene: Scene {
+object ScoreboardScene: Scene {
     override fun update(): UpdateResponse? {
         return null
     }

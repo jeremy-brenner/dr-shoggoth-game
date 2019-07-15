@@ -19,4 +19,6 @@ data class PillBottle(
     fun addPill(pillView: PillView) = pillViews.add(pillView)
 
     fun filledLocations() = pillViews.flatMap { it.pill.getPoints() }
+
+    fun empty() = pillViews.clear()
 }

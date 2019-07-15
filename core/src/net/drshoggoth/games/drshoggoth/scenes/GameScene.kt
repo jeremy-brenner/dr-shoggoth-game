@@ -15,10 +15,10 @@ import net.drshoggoth.games.drshoggoth.Camera
 import net.drshoggoth.games.drshoggoth.GameConstants.COLORS
 import net.drshoggoth.games.drshoggoth.models.Pill
 import net.drshoggoth.games.drshoggoth.models.PillBottle
-import net.drshoggoth.games.drshoggoth.responses.UpdateResponse
+import net.drshoggoth.games.drshoggoth.responses.GameResponse
 import net.drshoggoth.games.drshoggoth.views.PillView
 
-class GameScene: Scene {
+object GameScene: Scene {
         private var currentPillView: PillView? = null
 
         var rotatedAt = 0L
@@ -39,15 +39,20 @@ class GameScene: Scene {
 
         fun randomColor() = COLORS[MathUtils.random(0,2)]
 
-        fun newPill() {
-                val pill = Pill(randomColor(), randomColor(), GridPoint2(pillBottle.width / 2, pillBottle.height))
-                currentPillView = PillView(pill)
-                currentPillView!!.bitViews.forEach { instances.add(it.model) }
-        }
+        fun newPill(): Boolean =
+                Pill(randomColor(), randomColor(), GridPoint2(pillBottle.width / 2, pillBottle.height)).let {
+                        return if( pillBottle.hasRoomFor(it) ) {
+                                currentPillView = PillView(it)
+                                currentPillView!!.bitViews.forEach { view -> instances.add(view.model) }
+                                true
+                        } else { false }
+                }
 
-        override fun update(): UpdateResponse? {
-                if(currentPillView == null) {
-                        newPill()
+        override fun update(): GameResponse {
+                if(currentPillView == null && !newPill() ){
+                    pillBottle.empty()
+                        instances.clear()
+                    return GameResponse(done=true)
                 }
 
                 val pill = currentPillView!!.pill
@@ -56,7 +61,8 @@ class GameScene: Scene {
                         val moved = commitIfValid(pill.moveDown())
                         if(!moved) {
                                 pillBottle.addPill(currentPillView!!)
-                                newPill()
+                                System.err.println( pillBottle.filledLocations())
+                                currentPillView = null
                         }
                         movedDownAt = TimeUtils.millis()
                 }
@@ -75,7 +81,12 @@ class GameScene: Scene {
                         commitIfValid(pill.moveRight())
                         movedAt = TimeUtils.millis()
                 }
-                return null
+
+                if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+                        return GameResponse(pause=true)
+                }
+
+                return GameResponse()
         }
 
         override fun render() {

@@ -4,26 +4,28 @@ import net.drshoggoth.games.drshoggoth.responses.UpdateResponse
 import net.drshoggoth.games.drshoggoth.scenes.*
 
 object SceneManager {
-    var current = "loading"
+    var current = listOf("loading")
 
     private val scenes = mapOf(
-            "loading" to LoadingScene(),
-            "title" to TitleScene(),
-            "game" to GameScene(),
-            "background" to BackgroundScene(),
-            "scoreboard" to ScoreboardScene()
+            "loading" to LoadingScene,
+            "title" to TitleScene,
+            "game" to GameScene,
+            "background" to BackgroundScene,
+            "scoreboard" to ScoreboardScene
     )
+
+    fun currentScenes() = current.map { scenes[it] }.filterNotNull()
 
     fun create() {
         scenes.map { it.value.create() }
     }
 
-    fun update(): UpdateResponse? {
-        return scenes[current]?.let { it.update() }
+    fun update(): List<UpdateResponse> {
+        return currentScenes().map { it.update() }.filterNotNull()
     }
 
     fun render() {
-        scenes[current]?.let { it.render() }
+        currentScenes().forEach { it.render() }
     }
 
     fun dispose() {
