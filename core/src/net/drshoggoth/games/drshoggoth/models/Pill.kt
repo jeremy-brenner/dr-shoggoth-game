@@ -29,4 +29,5 @@ data class Pill(
             bits[0].single = true
         }
     }
+    fun lowestPoint() = bits.map { it.location }.minBy { it.y }
 }

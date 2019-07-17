@@ -10,7 +10,8 @@ object SceneManager {
             TitleScene,
             GameScene,
             BackgroundScene,
-            ScoreboardScene
+            ScoreboardScene,
+            PauseScene
     )
 
     fun create() {

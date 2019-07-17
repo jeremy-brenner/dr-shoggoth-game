@@ -7,12 +7,9 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight
 import com.badlogic.gdx.utils.TimeUtils
-import net.drshoggoth.games.drshoggoth.BitViewManager
-import net.drshoggoth.games.drshoggoth.Camera
-import net.drshoggoth.games.drshoggoth.SceneResponse
+import net.drshoggoth.games.drshoggoth.*
 import net.drshoggoth.games.drshoggoth.models.Pill
 import net.drshoggoth.games.drshoggoth.models.PillBottle
-import net.drshoggoth.games.drshoggoth.models.PillIterator
 
 object GameScene : Scene {
 
@@ -36,7 +33,7 @@ object GameScene : Scene {
     }
 
     fun commitIfValid(pill: Pill) =
-            if (pillBottle.hasRoomFor(pill)) {
+            if (pillBottle.hasRoomFor(pill.getPoints())) {
                 currentPill!!.commit(pill)
                 true
             } else {
@@ -44,7 +41,6 @@ object GameScene : Scene {
             }
 
     override fun update(): SceneResponse {
-
         if (currentPill == null && !newPill()) {
             pillBottle.empty()
             BitViewManager.clear()
@@ -68,26 +64,24 @@ object GameScene : Scene {
             movedDownAt = TimeUtils.millis()
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && TimeUtils.timeSinceMillis(rotatedAt) > 200) {
+        if (GameInput.space()) {
             commitIfValid(pill.rotate()) || commitIfValid(pill.moveLeft().rotate())
-            rotatedAt = TimeUtils.millis()
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && TimeUtils.timeSinceMillis(movedAt) > 200) {
+        if (GameInput.left()) {
             commitIfValid(pill.moveLeft())
-            movedAt = TimeUtils.millis()
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && TimeUtils.timeSinceMillis(movedAt) > 200) {
+        if (GameInput.right()) {
             commitIfValid(pill.moveRight())
-            movedAt = TimeUtils.millis()
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+        if (GameInput.enter()) {
             return SceneResponse.PAUSE
         }
 
         BitViewManager.update()
+
         return SceneResponse.NONE
     }
 

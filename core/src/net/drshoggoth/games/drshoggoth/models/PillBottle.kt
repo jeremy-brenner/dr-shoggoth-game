@@ -11,10 +11,9 @@ data class PillBottle(
     private val pills: MutableList<Pill> = mutableListOf()
     fun addPill(pill: Pill) = pills.add(pill)
     private fun bits() = pills.flatMap { it.bits }
-    fun hasRoomFor(pill: Pill) = hasRoomFor(pill.getPoints())
-    fun hasRoomFor(points: List<GridPoint2>) = points.all { hasRoomFor(it) }
-    private fun hasRoomFor(point: GridPoint2) =
-            point.x in 0 until width && point.y >= 0 && !filledLocations().contains(point)
+    fun hasRoomFor(points: List<GridPoint2>, ignoring: List<GridPoint2> = listOf()) = points.all { hasRoomFor(it,ignoring) }
+    private fun hasRoomFor(point: GridPoint2, ignoring: List<GridPoint2> = listOf()) =
+            point.x in 0 until width && point.y >= 0 && !filledLocations().filter { !ignoring.contains(it) }.contains(point)
 
     private fun filledLocations() = bits().map { it.location }
     private fun rows() = bits().sortedBy { it.location.x }.groupBy { it.location.y }.values
@@ -47,9 +46,9 @@ data class PillBottle(
         var movedSomething: Boolean
         do {
             movedSomething = false
-            pills.sortedBy { it.bits.minBy { bit -> bit.location.y }?.location?.y }.forEach {
+            pills.sortedBy { it.lowestPoint()!!.y }.forEach {
                 val pill = it.moveDown()
-                if (hasRoomFor(pill)) {
+                if (hasRoomFor(pill.getPoints(), it.getPoints())) {
                     it.commit(pill)
                     movedSomething = true
                 }
