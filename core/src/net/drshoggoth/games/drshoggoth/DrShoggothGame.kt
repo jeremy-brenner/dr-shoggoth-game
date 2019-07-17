@@ -3,10 +3,6 @@ package net.drshoggoth.games.drshoggoth
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
-import net.drshoggoth.games.drshoggoth.scenes.BackgroundScene
-import net.drshoggoth.games.drshoggoth.scenes.GameScene
-import net.drshoggoth.games.drshoggoth.scenes.PauseScene
-import net.drshoggoth.games.drshoggoth.scenes.TitleScene
 
 class DrShoggothGame : ApplicationAdapter() {
     override fun create() {
@@ -19,40 +15,9 @@ class DrShoggothGame : ApplicationAdapter() {
     }
 
     override fun render() {
-        SceneManager.update().forEach { response ->
-            when (response) {
-                SceneResponse.DONE_LOADING -> handleDoneLoading()
-                SceneResponse.NEW_GAME -> handleNewGame()
-                SceneResponse.GAME_OVER -> handleGameOver()
-                SceneResponse.PAUSE -> handlePause()
-                SceneResponse.UNPAUSE -> handleUnpause()
-            }
-        }
-
+        SceneManager.update().forEach { it.run() }
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
-
         SceneManager.render()
-    }
-
-    fun handleDoneLoading() {
-        SceneManager.current = listOf(TitleScene)
-    }
-
-    fun handleNewGame() {
-        GameScene.newGame()
-        SceneManager.current = listOf(BackgroundScene, GameScene)
-    }
-
-    fun handleGameOver() {
-        SceneManager.current = listOf(TitleScene)
-    }
-
-    fun handlePause() {
-        SceneManager.current = listOf(BackgroundScene, PauseScene)
-    }
-
-    fun handleUnpause() {
-        SceneManager.current = listOf(BackgroundScene, GameScene)
     }
 
     override fun dispose() {
