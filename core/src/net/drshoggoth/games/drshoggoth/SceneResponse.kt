@@ -7,34 +7,34 @@ import net.drshoggoth.games.drshoggoth.scenes.TitleScene
 
 enum class SceneResponse {
     NONE {
-        override fun run() {}
+        override fun execResponse() {}
     },
     DONE_LOADING {
-        override fun run() {
+        override fun execResponse() {
             SceneManager.current = listOf(TitleScene)
         }
     },
     NEW_GAME {
-        override fun run() {
+        override fun execResponse() {
             GameScene.newGame()
             SceneManager.current = listOf(BackgroundScene, GameScene)
         }
     },
     GAME_OVER {
-        override fun run() {
+        override fun execResponse() {
             SceneManager.current = listOf(TitleScene)
         }
     },
     PAUSE {
-        override fun run() {
+        override fun execResponse() {
             SceneManager.current = listOf(BackgroundScene, PauseScene)
         }
     },
     UNPAUSE {
-        override fun run() {
+        override fun execResponse() {
             SceneManager.current = listOf(BackgroundScene, GameScene)
         }
     };
 
-    abstract fun run()
+    abstract fun execResponse()
 }

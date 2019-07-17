@@ -15,7 +15,7 @@ class DrShoggothGame : ApplicationAdapter() {
     }
 
     override fun render() {
-        SceneManager.update().forEach { it.run() }
+        SceneManager.update().forEach { it.execResponse() }
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
         SceneManager.render()
     }
