@@ -1,7 +1,5 @@
 package net.drshoggoth.games.drshoggoth
 
-import kotlin.math.pow
-
 object GameConstants {
     val COLORS = listOf("blue", "yellow", "red")
     const val ITERATIONS = 15

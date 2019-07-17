@@ -1,7 +1,5 @@
 package net.drshoggoth.games.drshoggoth.scenes
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.g3d.Environment
 import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute
@@ -12,9 +10,6 @@ import net.drshoggoth.games.drshoggoth.models.Pill
 import net.drshoggoth.games.drshoggoth.models.PillBottle
 
 object GameScene : Scene {
-
-    var rotatedAt = 0L
-    var movedAt = 0L
     var movedDownAt = 0L
     private var pillBottle = PillBottle()
     private val environment = Environment()
