@@ -1,26 +1,32 @@
 package net.drshoggoth.games.drshoggoth.models
 
-import com.badlogic.gdx.math.GridPoint2
-
 data class Pill(
-        val color1: String,
-        val color2: String,
-        var origin: GridPoint2,
-        var rotation: Int = 0
+        var bits: MutableList<Bit>
 ) {
-    var bits: List<PillBit> = listOf(
-            PillBit(color1, GridPoint2(origin.x + modX(rotation), origin.y + modY(rotation)), rotation * -90f),
-            PillBit(color2, GridPoint2(origin.x + modX(rotation + 2), origin.y + modY(rotation + 2)), (rotation + 2) * -90f)
-    )
-
-    fun rotate() = Pill(color1, color2, origin.cpy(), (rotation + 1) % 4)
-    fun moveDown() = Pill(color1, color2, GridPoint2(origin.x, origin.y - 1), rotation)
-    fun moveLeft() = Pill(color1, color2, GridPoint2(origin.x - 1, origin.y), rotation)
-    fun moveRight() = Pill(color1, color2, GridPoint2(origin.x + 1, origin.y), rotation)
-
+    fun moveDown() = Pill(bits.map { it.moveDown() }.toMutableList())
+    fun moveLeft() =  Pill(bits.map { Bit(it.color,it.location.cpy().sub(1,0),it.rotation, it.single) }.toMutableList())
+    fun moveRight() = Pill(bits.map { Bit(it.color,it.location.cpy().add(1,0),it.rotation, it.single) }.toMutableList())
+    fun rotate() = Pill(bits.map { Bit(it.color,it.location.cpy().add(nextY(it.rotation),nextX(it.rotation)), nextRotation(it.rotation),it.single) }.toMutableList())
+    private fun nextRotation(rotation: Int) = (rotation+1)%4
+    private fun nextX(rotation: Int) = when(nextRotation(rotation)) {
+        2 -> 1
+        3 -> -1
+        else -> 0
+    }
+    private fun nextY(rotation: Int) = when(nextRotation(rotation)) {
+        0 -> -1
+        3 -> 1
+        else -> 0
+    }
+    fun commit(pill: Pill) = pill.bits.forEachIndexed { i,bit ->
+        bits[i].rotation = bit.rotation
+        bits[i].location.set(bit.location)
+    }
     fun getPoints() = bits.map { it.location }
-
-    private fun modX(r: Int) = if (r == 3) 1 else 0
-    private fun modY(r: Int) = if (r == 2) 1 else 0
-
+    fun cleanUp() {
+        bits.removeAll { it.deleted }
+        if(bits.count() == 1) {
+            bits[0].single = true
+        }
+    }
 }

@@ -3,10 +3,8 @@ package net.drshoggoth.games.drshoggoth
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
-import net.drshoggoth.games.drshoggoth.responses.DoneLoadingResponse
-import net.drshoggoth.games.drshoggoth.responses.GameResponse
-import net.drshoggoth.games.drshoggoth.responses.MenuSelectionResponse
-
+import net.drshoggoth.games.drshoggoth.scenes.GameScene
+import net.drshoggoth.games.drshoggoth.scenes.TitleScene
 
 class DrShoggothGame : ApplicationAdapter() {
     override fun create() {
@@ -21,9 +19,9 @@ class DrShoggothGame : ApplicationAdapter() {
     override fun render() {
         SceneManager.update().forEach { response ->
           when(response){
-            is DoneLoadingResponse -> handleDoneLoading(response)
-            is MenuSelectionResponse -> handleMenuSelection(response)
-            is GameResponse -> handleGameResponse(response)
+            SceneResponse.DONE_LOADING -> handleDoneLoading()
+            SceneResponse.NEW_GAME -> handleNewGame()
+            SceneResponse.GAME_OVER -> handleGameOver()
           }
         }
 
@@ -32,16 +30,17 @@ class DrShoggothGame : ApplicationAdapter() {
         SceneManager.render()
     }
 
-    fun handleDoneLoading(response: DoneLoadingResponse) {
-        if(response.done) { SceneManager.current = listOf("title") }
+    fun handleDoneLoading() {
+         SceneManager.current = listOf(TitleScene)
     }
 
-    fun handleMenuSelection(response: MenuSelectionResponse) {
-        SceneManager.current = listOf(response.selection)
+    fun handleNewGame() {
+        GameScene.newGame()
+        SceneManager.current = listOf(GameScene)
     }
 
-    fun handleGameResponse(response: GameResponse) {
-        if(response.done) { SceneManager.current = listOf("title") }
+    fun handleGameOver() {
+        SceneManager.current = listOf(TitleScene)
     }
 
     override fun dispose() {

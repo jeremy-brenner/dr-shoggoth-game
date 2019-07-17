@@ -4,17 +4,15 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import net.drshoggoth.games.drshoggoth.Assets
-import net.drshoggoth.games.drshoggoth.responses.MenuSelectionResponse
+import net.drshoggoth.games.drshoggoth.SceneResponse
 
-object TitleScene: Scene {
+object TitleScene : Scene {
     lateinit var spriteBatch: SpriteBatch
 
-    override fun update(): MenuSelectionResponse? {
-        return if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            MenuSelectionResponse("game")
-        } else {
-            null
-        }
+    override fun update() = if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+        SceneResponse.NEW_GAME
+    } else {
+        SceneResponse.NONE
     }
 
     override fun render() {
