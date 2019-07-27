@@ -37,7 +37,7 @@ data class PillBottle(
 
     fun deletableBits() = groups().filter { it.count() > 3 }.flatten()
     fun flagBitsDeleted() = deletableBits().forEach { it.deleted = true }
-    fun cleanUp() {
+    fun removeDeletedBits() {
         pills.filter { pill -> pill.bits.any { bit -> bit.deleted } }.forEach { it.cleanUp() }
         pills.removeAll { it.bits.count() == 0 }
     }
