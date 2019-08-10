@@ -25,11 +25,14 @@ object Assets {
     fun dispose() = manager.dispose()
     fun update() = manager.update()
 
-    fun getPillModelInstance(color: String) = ModelInstance(manager.get(pillFile(color), Model::class.java))
+    fun getModelInstance(fileName: String) = ModelInstance(manager.get(fileName, Model::class.java))
+
+    fun getPillModelInstance(color: String) = getModelInstance(pillFile(color))
     fun getFont() = Assets.manager.get("fonts/OpenSans-Bold.ttf", BitmapFont::class.java)
 
+    private fun loadModel(fileName: String) = manager.load(fileName, Model::class.java)
     private fun pillFile(color: String) = "${color}_pill.g3dj"
-    private fun loadPillModel(color: String) = manager.load(pillFile(color), Model::class.java)
+    private fun loadPillModel(color: String) = loadModel(pillFile(color))
     private fun loadPills() = GameConstants.COLORS.forEach { loadPillModel(it) }
     private fun loadFonts() {
         manager.setLoader(FreeTypeFontGenerator::class.java, FreeTypeFontGeneratorLoader(resolver))
