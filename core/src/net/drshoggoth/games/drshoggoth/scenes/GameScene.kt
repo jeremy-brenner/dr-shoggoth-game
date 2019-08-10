@@ -1,5 +1,6 @@
 package net.drshoggoth.games.drshoggoth.scenes
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g3d.Environment
 import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute
@@ -8,6 +9,10 @@ import com.badlogic.gdx.utils.TimeUtils
 import net.drshoggoth.games.drshoggoth.*
 import net.drshoggoth.games.drshoggoth.models.Pill
 import net.drshoggoth.games.drshoggoth.models.PillBottle
+import com.badlogic.gdx.graphics.g3d.utils.DefaultShaderProvider
+import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader
+import hall.collin.christopher.stl4j.STLParser
+
 
 object GameScene : Scene {
     private var movedDownAt = 0L
@@ -15,11 +20,6 @@ object GameScene : Scene {
     private val environment = Environment()
     private lateinit var modelBatch: ModelBatch
     private var currentPill: Pill? = null
-
-    fun newGame() {
-        PillIterator.shuffle()
-        currentPill = null
-    }
 
     override fun update(): SceneResponse {
         if (currentPill == null && !newPill()) {
@@ -77,6 +77,17 @@ object GameScene : Scene {
         modelBatch.dispose()
         BitViewManager.clear()
     }
+
+    fun newGame() {
+        val gfile = Gdx.files.internal("elbow.stl")
+
+        val stl = STLParser.parseSTLFile(gfile.file())
+        println(stl)
+
+        PillIterator.shuffle()
+        currentPill = null
+    }
+
     private fun commitIfValid(pill: Pill) =
             if (pillBottle.hasRoomFor(pill.getPoints())) {
                 currentPill!!.commit(pill)
