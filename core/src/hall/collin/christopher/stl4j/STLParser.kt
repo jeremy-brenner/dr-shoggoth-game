@@ -87,21 +87,18 @@ object STLParser {
                 }
         }
 
-        return if (isASCIISTL) {
+        return if (isASCIISTL || !isbinaryfile(allBytes)) {
             readASCII(allBytes.toString(Charsets.UTF_8).toLowerCase())
-        } else if (isbinaryfile(allBytes)) {
-           readBinary(allBytes)
         } else {
-            listOf() // isbinaryfile would have thrown
+           readBinary(allBytes)
         }
     }
 
 
     fun readblock(allBytes: ByteArray, offset: Int, length: Int): String {
-        var length = length
-        if (allBytes.size - offset < length) length = allBytes.size - offset
+        val realLength = if (allBytes.size - offset < length) { allBytes.size - offset } else { length }
         val charset = Charsets.UTF_8
-        val decode = charset.decode(ByteBuffer.wrap(allBytes, offset, length))
+        val decode = charset.decode(ByteBuffer.wrap(allBytes, offset, realLength))
         return decode.toString().toLowerCase()
     }
 
@@ -221,14 +218,13 @@ object STLParser {
         // WARNING: STL FILES ARE SMALL-ENDIAN
         val numberTriangles = Integer.reverseBytes(inputStream.readInt())
         triangles.ensureCapacity(numberTriangles)
-        // read triangles
         try {
             while (inputStream.available() > 0) {
                 val nvec = FloatArray(3)
                 for (i in nvec.indices) {
                     nvec[i] = java.lang.Float.intBitsToFloat(Integer.reverseBytes(inputStream.readInt()))
                 }
-                val normal = Vec3d(nvec[0].toDouble(), nvec[1].toDouble(), nvec[2].toDouble()) // not used (yet)
+//                val normal = Vec3d(nvec[0].toDouble(), nvec[1].toDouble(), nvec[2].toDouble()) // not used (yet)
                 val vertices = arrayOfNulls<Vec3d>(3)
                 for (v in vertices.indices) {
                     val vals = FloatArray(3)
@@ -237,7 +233,8 @@ object STLParser {
                     }
                     vertices[v] = Vec3d(vals[0].toDouble(), vals[1].toDouble(), vals[2].toDouble())
                 }
-                val attribute = java.lang.Short.reverseBytes(inputStream.readShort()) // not used (yet)
+                //val attribute = java.lang.Short.reverseBytes(inputStream.readShort()) // not used (yet)
+                inputStream.readShort()
                 triangles.add(Triangle(vertices[0]!!, vertices[1]!!, vertices[2]!!))
             }
         } catch (ex: Exception) {
