@@ -59,6 +59,9 @@ object STLParser {
      */
     @Throws(IOException::class)
     fun parseSTLFile(file: File): List<Triangle> {
+        if(file.length()==0L) {
+            throw IllegalArgumentException("empty file");
+        }
         val allBytes = file.readBytes()
         // determine if it is ASCII or binary STL
 
